@@ -4,6 +4,9 @@ const form = document.getElementById("investment-form");
 
 function renderProgression(evt) {
   evt.preventDefault();
+  if (document.querySelector(".error")) {
+    return;
+  }
   const startingAmount = Number(
     document.getElementById("starting-amount").value.replace(",", ".")
   );
@@ -38,16 +41,27 @@ function validateInput(evt) {
   }
 
   const { parentElement } = evt.target;
-  const grandParentElement = evt.target.parentElement.parentElement;
+  const grandParentElement = parentElement.parentElement;
   const inputValue = evt.target.value.replace(",", ".");
 
-  if (isNaN(inputValue) || Number(inputValue) <= 0) {
-    const errorTextElement = document.createElement("p");
-    errorTextElement.classList.add("text-red-500");
-    errorTextElement.innerText = "Insira um valor numérico e maior que zero.";
+  // Verifica se já existe um elemento de erro
+  const existingError = grandParentElement.querySelector(".text-red-500");
 
-    parentElement.classList.add("error");
-    grandParentElement.appendChild(errorTextElement);
+  if (isNaN(inputValue) || Number(inputValue) <= 0) {
+    if (!existingError) {
+      const errorTextElement = document.createElement("p");
+      errorTextElement.classList.add("text-red-500");
+      errorTextElement.innerText = "Insira um valor numérico e maior que zero.";
+
+      parentElement.classList.add("error");
+      grandParentElement.appendChild(errorTextElement);
+    }
+  } else {
+    // Remove o erro existente se o valor for válido
+    if (existingError) {
+      existingError.remove();
+      parentElement.classList.remove("error");
+    }
   }
 }
 
