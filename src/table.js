@@ -2,7 +2,7 @@ const isNonEmptyArray = (arrayElement) => {
   return Array.isArray(arrayElement) && arrayElement.length > 0;
 };
 
-const createTable = (columnsArray, dataArray, tableId) => {
+export const createTable = (columnsArray, dataArray, tableId) => {
   if (
     !isNonEmptyArray(columnsArray) ||
     !isNonEmptyArray(dataArray) ||
@@ -18,7 +18,7 @@ const createTable = (columnsArray, dataArray, tableId) => {
   }
 
   createTableHeader(tableElement, columnsArray);
-  createTableBody();
+  createTableBody(tableReference, dataArray, columnsArray);
 };
 
 function createTableHeader(tableReference, columnsArray) {
@@ -37,4 +37,23 @@ function createTableHeader(tableReference, columnsArray) {
   tableHeaderReference.appendChild(headerRow);
 }
 
-function createTableBody() {}
+function createTableBody(tableReference, tableItems, columnsArray) {
+  function createTbodyElement(tableReference) {
+    const tbody = document.createElement("tbody");
+    tableReference.appendChild(tbody);
+    return tbody;
+  }
+  const tableBodyReference =
+    tableReference.querySelector("tbody") ?? createTbodyElement(tableReference);
+
+  for (const [itemIndex, tableItem] of tableItems.entries()) {
+    const tableRow = document.createElement("tr");
+
+    for (const tableColumn of columnsArray) {
+      tableRow.innerHTML += /*html*/ `<td class="text-center">${
+        tableItem[tableColumn.accessor]
+      }</td>`;
+    }
+    tableBodyReference.appendChild(tableRow);
+  }
+}
