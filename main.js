@@ -9,6 +9,14 @@ const clearFormButton = document.getElementById("clear-form");
 let doughnutChartReference = {};
 let progressionChartReference = {};
 
+const columnsArray = [
+  { columnLabel: "Total investido", accessor: "investedAmount" },
+  { columnLabel: "Rendimento mensal", accessor: "interestReturns" },
+  { columnLabel: "Rendimento total", accessor: "totalInterestReturns" },
+  { columnLabel: "Mês", accessor: "monthly" },
+  { columnLabel: "Valor total", accessor: "totalAmount" },
+];
+
 function formatCurrency(value) {
   return value.toFixed(2);
 }
